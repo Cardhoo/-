@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cardo - Personal Space</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- ICONS -->
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+
+  <!-- STYLE -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- BGM - SINGLE AUDIO ELEMENT WITH MUTED AUTOPLAY -->
+  <audio id="bgm" autoplay muted loop preload="auto">
+    <source src="bgm.mp3" type="audio/mpeg">
+    <source src="bgm.ogg" type="audio/ogg">
+    <source src="bgm.wav" type="audio/wav">
+    <p>Your browser doesn't support audio playback.</p>
+  </audio>
+
+  <!-- MUSIC CONTROL - STARTS WITH MUTE ICON -->
+  <button id="music-btn" class="floating" title="Music is muted - Scroll to unmute">
+    <i class="bx bx-volume-mute"></i>
+  </button>
+
+  <!-- TETRIS BLOCKS BACKGROUND -->
+  <div id="tetris-game" class="game-container">
+    <canvas id="game-canvas"></canvas>
+  </div>
+
+  <!-- HERO SECTION -->
+  <header class="hero parallax">
+    <!-- FLOATING PARTICLES -->
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <!-- HOLOGRAM GRID -->
+    <div class="hologram-grid">
+      <div class="grid-line"></div>
+      <div class="grid-line"></div>
+      <div class="grid-line"></div>
+      <div class="grid-line"></div>
+    </div>
+
+    <!-- GEOMETRIC SHAPES -->
+    <div class="shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+
+    <div class="hero-content">
+      <!-- GLITCH EFFECT ON NAME -->
+      <div class="glitch-container">
+        <h1 class="glitch hologram-text" data-text="Halo, aku Cardo!">Halo, aku Cardo!</h1>
+      </div>
+      
+      <!-- TYPING EFFECT -->
+      <p class="typing-text hologram-text">
+        <span id="typed-text"></span>
+        <span class="cursor">|</span>
+      </p>
+
+      <!-- SOCIAL BADGES -->
+      <div class="hero-badges">
+        <div class="badge pulse hologram-badge">
+          <i class="bx bx-game"></i>
+          <span>Gamer</span>
+        </div>
+      </div>
+
+      <a href="#links" class="cta glow-btn hologram-btn">
+        <i class="bx bx-rocket"></i>
+        Ayo Jelajahi
+      </a>
+    </div>
+
+    <!-- SCROLL INDICATOR -->
+    <div class="scroll-indicator">
+      <div class="mouse">
+        <div class="wheel"></div>
+      </div>
+      <span>Scroll Down</span>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT FRAME -->
+  <section id="links" class="main-frame">
+    <div class="frame-border" id="main-frame-border">
+      <div class="frame-content">
+        <h2 data-splitting>Support & Connect</h2>
+        
+        <!-- PROMO SECTION -->
+        <div class="promo-banner hologram-banner">
+          <div class="promo-content">
+            <i class="bx bx-shield-check"></i>
+            <div class="promo-text">
+              <h3>Butuh Middleman Terpercaya? 🛡️</h3>
+              <p>Cari grup jual & beli yang aman? Butuh MM (Middleman) yang bisa dipercaya? 
+              Aku siap bantu kamu! Join Discord atau WhatsApp grup buat transaksi yang lebih secure. 
+              Pengalaman jual & beli yang aman adalah prioritas utama! 💯</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MM FEE PANEL -->
+        <div class="fee-panel hologram-banner">
+          <h3><i class="bx bx-calculator"></i> Fee Middleman Service</h3>
+          <div class="fee-grid">
+            <div class="fee-card">
+              <div class="transaction-range">Rp1,000 - Rp49,000</div>
+              <div class="fee-amount">Fee: Rp1,000</div>
+            </div>
+            <div class="fee-card">
+              <div class="transaction-range">Rp50,000 - Rp99,000</div>
+              <div class="fee-amount">Fee: Rp2,500</div>
+            </div>
+            <div class="fee-card">
+              <div class="transaction-range">Rp100,000 - Rp499,000</div>
+              <div class="fee-amount">Fee: Rp5,000</div>
+            </div>
+            <div class="fee-card">
+              <div class="transaction-range">Rp500,000 - Rp999,000</div>
+              <div class="fee-amount">Fee: Rp9,000</div>
+            </div>
+          </div>
+          <div class="fee-note">
+            <i class="bx bx-info-circle"></i>
+            <span>Fee sudah termasuk jaminan keamanan 100%. Untuk transaksi di atas Rp1,000,000 silakan hubungi langsung!</span>
+          </div>
+        </div>
+
+        <!-- PHOTO TESTIMONIALS SECTION -->
+        <div class="photo-testimonials-section">
+          <h3><i class="bx bx-image"></i> Testimoni</h3>
+          <div class="photo-grid" id="testimonials-photos">
+            
+            <!-- TESTIMONI FOTO 1 -->
+            <div class="testimonial-photo hologram-card">
+              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_1&sz=w400" alt="Testimonial 1">
+              <div class="photo-overlay">
+                <i class="bx bx-zoom-in"></i>
+              </div>
+            </div>
+
+            <!-- TESTIMONI FOTO 2 -->
+            <div class="testimonial-photo hologram-card">
+              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_2&sz=w400" alt="Testimonial 2">
+              <div class="photo-overlay">
+                <i class="bx bx-zoom-in"></i>
+              </div>
+            </div>
+
+            <!-- TESTIMONI FOTO 3 -->
+            <div class="testimonial-photo hologram-card">
+              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_3&sz=w400" alt="Testimonial 3">
+              <div class="photo-overlay">
+                <i class="bx bx-zoom-in"></i>
+              </div>
+            </div>
+            
+          </div>
+          
+          <!-- EASY ADD INSTRUCTIONS -->
+          <div class="add-testimonial-info">
+            <p><i class="bx bx-info-circle"></i> Testimoni selalu update setiap ada transaksi done.</p>
+          </div>
+        </div>
+        
+        <div class="links-grid">
+          
+          <!-- DONATION SECTION -->
+          <div class="section-group">
+            <h3><i class="bx bx-heart"></i> Support Me</h3>
+            <div class="cards">
+              <a href="<!-- TODO: paste link Tako -->" class="card donate-card hologram-card">
+                <i class="bx bxs-donate-heart"></i>
+                <span>Donate via <strong>Tako</strong></span>
+                <div class="card-glow"></div>
+              </a>
+              
+              <a href="<!-- TODO: paste link Sociabuz -->" class="card donate-card hologram-card">
+                <i class="bx bx-coffee-togo"></i>
+                <span>Donate via <strong>Sociabuzz</strong></span>
+                <div class="card-glow"></div>
+              </a>
+            </div>
+          </div>
+
+          <!-- SOCIAL SECTION -->
+          <div class="section-group">
+            <h3><i class="bx bx-group"></i> Join Community</h3>
+            <div class="cards">
+              <a href="<!-- TODO: paste Discord invite -->" class="card social-card discord hologram-card">
+                <i class="bx bxl-discord-alt"></i>
+                <span>Join <strong>Discord</strong></span>
+                <small>Tempat mabar & info game seru</small>
+                <div class="card-glow"></div>
+              </a>
+
+              <a href="<!-- TODO: paste WhatsApp group link -->" class="card social-card whatsapp hologram-card">
+                <i class="bx bxl-whatsapp"></i>
+                <span>Join <strong>Group JB whatsapp</strong></span>
+                <small>Grup jual & beli + MM 24/7</small>
+                <div class="card-glow"></div>
+              </a>
+            </div>
+          </div>
+
+          <!-- CONTENT SECTION -->
+          <div class="section-group">
+            <h3><i class="bx bx-play-circle"></i> Follow Content</h3>
+            <div class="cards">
+              <a href="<!-- TODO: paste YouTube channel link -->" class="card content-card youtube hologram-card">
+                <i class="bx bxl-youtube"></i>
+                <span>Subscribe <strong>YouTube</strong></span>
+                <small>Gaming content</small>
+                <div class="card-glow"></div>
+              </a>
+
+              <a href="<!-- TODO: paste TikTok link -->" class="card content-card tiktok hologram-card">
+                <i class="bx bxl-tiktok"></i>
+                <span>Follow <strong>TikTok</strong></span>
+                <small>Short content & daily updates</small>
+                <div class="card-glow"></div>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© <span id="year"></span> Cardo.Store 🎮 | Trusted Middleman Services </p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
