@@ -302,6 +302,53 @@ class TetrisBlocksRain {
     }
 }
 
+/* ===== PHOTO ZOOM FUNCTIONS - ENHANCED ===== */
+function openPhotoZoom(element) {
+    const modal = document.getElementById('photoZoomModal');
+    const modalImg = document.getElementById('zoomedImage');
+    const img = element.querySelector('img');
+    
+    if (img && img.src) {
+        // Get higher resolution version
+        let imgSrc = img.src;
+        if (imgSrc.includes('sz=w400')) {
+            imgSrc = imgSrc.replace('sz=w400', 'sz=w1200');
+        }
+        
+        modalImg.src = imgSrc;
+        modalImg.alt = img.alt;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        console.log('🔍 Photo zoom opened:', imgSrc);
+    }
+}
+
+function closePhotoZoom() {
+    const modal = document.getElementById('photoZoomModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    
+    // Clear image source after modal closes
+    setTimeout(() => {
+        const modalImg = document.getElementById('zoomedImage');
+        if (modalImg) {
+            modalImg.src = '';
+        }
+    }, 300);
+    
+    console.log('🔍 Photo zoom closed');
+}
+
+/* ===== SECURITY WARNINGS ===== */
+function showSecurityWarning() {
+    if (document.location.hostname !== 'localhost' && document.location.hostname !== '127.0.0.1') {
+        console.log('%cCARDO GAMING SECURITY WARNING!', 'color: #ef4444; font-size: 20px; font-weight: bold;');
+        console.log('%cJika kamu melihat website ini di domain selain yang resmi, kemungkinan ini adalah situs CLONE!', 'color: #ef4444; font-size: 14px;');
+        console.log('%cSelalu verifikasi kontak di halaman contact.html yang resmi!', 'color: #22c55e; font-size: 14px;');
+    }
+}
+
 /* ===== INITIALIZE EVERYTHING ===== */
 window.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Website initializing...');
@@ -336,17 +383,47 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log('❌ BGM element not found - check HTML');
     }
     
+    // INITIALIZE PHOTO ZOOM FUNCTIONALITY
+    const modal = document.getElementById('photoZoomModal');
+    
+    if (modal) {
+        console.log('🔍 Photo zoom modal found - initializing...');
+        
+        // Close when clicking outside image
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closePhotoZoom();
+            }
+        });
+        
+        // Prevent modal content click from closing
+        const zoomContent = modal.querySelector('.zoom-content');
+        if (zoomContent) {
+            zoomContent.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        // Close button event
+        const closeBtn = modal.querySelector('.zoom-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closePhotoZoom);
+        }
+        
+        console.log('✅ Photo zoom initialized');
+    } else {
+        console.log('⚠️ Photo zoom modal not found');
+    }
+    
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+            closePhotoZoom();
+        }
+    });
+    
     console.log('✅ Website initialization complete');
 });
-
-/* ===== SECURITY WARNINGS ===== */
-function showSecurityWarning() {
-    if (document.location.hostname !== 'localhost' && document.location.hostname !== '127.0.0.1') {
-        console.log('%cCARDO GAMING SECURITY WARNING!', 'color: #ef4444; font-size: 20px; font-weight: bold;');
-        console.log('%cJika kamu melihat website ini di domain selain yang resmi, kemungkinan ini adalah situs CLONE!', 'color: #ef4444; font-size: 14px;');
-        console.log('%cSelalu verifikasi kontak di halaman contact.html yang resmi!', 'color: #22c55e; font-size: 14px;');
-    }
-}
 
 // Run security check
 showSecurityWarning();
