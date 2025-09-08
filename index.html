@@ -148,24 +148,24 @@
           <div class="photo-grid" id="testimonials-photos">
             
             <!-- TESTIMONI FOTO 1 -->
-            <div class="testimonial-photo hologram-card">
-              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_1&sz=w400" alt="Testimonial 1">
+            <div class="testimonial-photo hologram-card" onclick="openPhotoZoom(this)">
+              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_1&sz=w400" alt="nothing">
               <div class="photo-overlay">
                 <i class="bx bx-zoom-in"></i>
               </div>
             </div>
 
             <!-- TESTIMONI FOTO 2 -->
-            <div class="testimonial-photo hologram-card">
-              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_2&sz=w400" alt="Testimonial 2">
+            <div class="testimonial-photo hologram-card" onclick="openPhotoZoom(this)">
+              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_2&sz=w400" alt="nothing">
               <div class="photo-overlay">
                 <i class="bx bx-zoom-in"></i>
               </div>
             </div>
 
             <!-- TESTIMONI FOTO 3 -->
-            <div class="testimonial-photo hologram-card">
-              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_3&sz=w400" alt="Testimonial 3">
+            <div class="testimonial-photo hologram-card" onclick="openPhotoZoom(this)">
+              <img src="https://drive.google.com/thumbnail?id=PASTE_FOTO_ID_3&sz=w400" alt="nothing">
               <div class="photo-overlay">
                 <i class="bx bx-zoom-in"></i>
               </div>
@@ -185,13 +185,13 @@
           <div class="section-group">
             <h3><i class="bx bx-heart"></i> Support Me</h3>
             <div class="cards">
-              <a href=https://tako.id/Crdhoo_ class="card donate-card hologram-card">
+              <a href="https://tako.id/Crdhoo_" class="card donate-card hologram-card">
                 <i class="bx bxs-donate-heart"></i>
                 <span>Donate via <strong>Tako</strong></span>
                 <div class="card-glow"></div>
               </a>
               
-              <a href=https://sociabuzz.com/cardoganz/tribe class="card donate-card hologram-card">
+              <a href="https://sociabuzz.com/cardoganz/tribe" class="card donate-card hologram-card">
                 <i class="bx bx-coffee-togo"></i>
                 <span>Donate via <strong>Sociabuzz</strong></span>
                 <div class="card-glow"></div>
@@ -203,14 +203,14 @@
           <div class="section-group">
             <h3><i class="bx bx-group"></i> Join Community</h3>
             <div class="cards">
-              <a href=https://discord.gg/umjsCQV3zX class="card social-card discord hologram-card">
+              <a href="https://discord.gg/3mfAjscgsv" class="card social-card discord hologram-card">
                 <i class="bx bxl-discord-alt"></i>
                 <span>Join <strong>Discord</strong></span>
                 <small>Tempat mabar & info game seru</small>
                 <div class="card-glow"></div>
               </a>
 
-              <a href=https://chat.whatsapp.com/I88rnv5ztk1EbdUDlVQ4y7?mode=ems_copy_t class="card social-card whatsapp hologram-card">
+              <a href="https://chat.whatsapp.com/I88rnv5ztk1EbdUDlVQ4y7?mode=ems_copy_t" class="card social-card whatsapp hologram-card">
                 <i class="bx bxl-whatsapp"></i>
                 <span>Join <strong>Group JB whatsapp</strong></span>
                 <small>Grup jual & beli + MM 24/7</small>
@@ -223,14 +223,14 @@
           <div class="section-group">
             <h3><i class="bx bx-play-circle"></i> Follow Content</h3>
             <div class="cards">
-              <a href=https://youtube.com/@r1yganz?si=8W-G9Pv3Zt2EvyNI class="card content-card youtube hologram-card">
+              <a href="https://youtube.com/@r1yganz?si=8W-G9Pv3Zt2EvyNI" class="card content-card youtube hologram-card">
                 <i class="bx bxl-youtube"></i>
                 <span>Subscribe <strong>YouTube</strong></span>
                 <small>Gaming content</small>
                 <div class="card-glow"></div>
               </a>
 
-              <a href=https://www.tiktok.com/@crdhoo_?_t=ZS-8zYaaD2SxMo&_r=1 class="card content-card tiktok hologram-card">
+              <a href="https://www.tiktok.com/@crdhoo_?_t=ZS-8zYaaD2SxMo&_r=1" class="card content-card tiktok hologram-card">
                 <i class="bx bxl-tiktok"></i>
                 <span>Follow <strong>TikTok</strong></span>
                 <small>Short content & daily updates</small>
@@ -244,6 +244,12 @@
     </div>
   </section>
 
+  <!-- PHOTO ZOOM MODAL -->
+  <div id="photoZoomModal" class="zoom-modal" onclick="closePhotoZoom()">
+    <span class="zoom-close">&times;</span>
+    <img class="zoom-content" id="zoomedImage" alt="Zoomed testimonial">
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <p>© <span id="year"></span> Cardo.Store 🎮 | Trusted Middleman Services </p>
@@ -254,6 +260,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
