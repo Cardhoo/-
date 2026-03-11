@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardo's Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: #0a0a0a;
+            color: white;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        #tetris-canvas {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background: linear-gradient(135deg, #1a1a2e 0%, #1f2937 50%, #1e293b 100%);
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+
+        #customAlert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background: rgba(30, 30, 50, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid #8b5cf6;
+            box-shadow: 0 0 50px rgba(139, 92, 246, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: alertShow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes alertShow {
+            from {
+                transform: translate(-50%, -60%) scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        #customAlert i {
+            font-size: 3em;
+            color: #8b5cf6;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        #customAlert h4 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #e0e7ff;
+        }
+
+        #customAlert p {
+            font-size: 1em;
+            color: rgba(224, 231, 255, 0.8);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        #customAlert button {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #customAlert button:hover {
+            background: #a78bfa;
+            transform: scale(1.1);
+        }
+
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: #e0e7ff;
+            text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
+            margin-bottom: 20px;
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+
+        .header h1::before,
+        .header h1::after {
+            content: '👋 Halo, Aku Cardo';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .header h1::before {
+            color: #8b5cf6;
+            animation: glitchTop 2s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+        }
+
+        .header h1::after {
+            color: #6366f1;
+            animation: glitchBottom 2.5s infinite;
+            clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(-2px, -2px);
+            }
+
+            60% {
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                transform: translate(2px, -2px);
+            }
+        }
+
+        @keyframes glitchTop {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-3px, -3px);
+            }
+
+            40% {
+                transform: translate(-3px, -3px);
+            }
+
+            60% {
+                transform: translate(3px, 3px);
+            }
+
+            80% {
+                transform: translate(3px, 3px);
+            }
+        }
+
+        @keyframes glitchBottom {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(3px, 3px);
+            }
+
+            40% {
+                transform: translate(3px, 3px);
+            }
+
+            60% {
+                transform: translate(-3px, -3px);
+            }
+
+            80% {
+                transform: translate(-3px, -3px);
+            }
+        }
+
+        .rotating-text {
+            font-size: 1.3em;
+            min-height: 40px;
+            color: #a5b4fc;
+            text-shadow: 0 0 10px rgba(165, 180, 252, 0.4);
+            font-weight: 500;
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+            transform-origin: center;
+        }
+
+        .rotating-text.fade-out {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.95);
+        }
+
+        .rotating-text.fade-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* --- CARDS --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(30, 30, 50, 0.6);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 45px 35px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 3px solid rgba(139, 92, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 0;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card i {
+            font-size: 4.5em;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        .card.donate i {
+            color: #a78bfa;
+        }
+
+        .card.community i {
+            color: #818cf8;
+        }
+
+        .card.game i {
+            color: #c4b5fd;
+        }
+
+        .card.social i {
+            color: #a5b4fc;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        .card h2 {
+            font-size: 1.7em;
+            margin-bottom: 12px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            color: #e0e7ff;
+        }
+
+        .card p {
+            color: rgba(224, 231, 255, 0.8);
+            font-size: 1em;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+
+        .footer-copyright {
+            position: relative;
+            z-index: 2;
+            margin-top: 60px;
+            text-align: center;
+            color: #a5b4fc;
+            font-size: 0.95em;
+            opacity: 0.7;
+        }
+
+        .footer-copyright i {
+            margin: 0 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.95) 0%, rgba(31, 41, 55, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            margin: 8% auto;
+            padding: 50px;
+            border-radius: 30px;
+            max-width: 550px;
+            animation: slideIn 0.4s ease;
+            box-shadow: 0 20px 80px rgba(139, 92, 246, 0.3);
+            border: 3px solid rgba(139, 92, 246, 0.4);
+        }
+
+        .modal-content.image-modal {
+            max-width: 800px;
+            padding: 40px;
+        }
+
+        .modal-content.image-modal img {
+            width: 100%;
+            border-radius: 15px;
+            border: 3px solid rgba(139, 92, 246, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .modal-content.image-modal img:last-child {
+            margin-bottom: 0;
+        }
+
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 20px;
+            font-size: 2.5em;
+            cursor: pointer;
+            color: #a78bfa;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 10px #a78bfa);
+            z-index: 10;
+        }
+
+        .close:hover {
+            transform: rotate(180deg) scale(1.2);
+            color: #c4b5fd;
+        }
+
+        .modal h3 {
+            margin-bottom: 35px;
+            text-align: center;
+            font-size: 2.2em;
+            text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+            color: #e0e7ff;
+        }
+
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            padding: 20px;
+            margin: 18px 0;
+            background: rgba(139, 92, 246, 0.12);
+            border: 3px solid rgba(139, 92, 246, 0.3);
+            border-radius: 18px;
+            color: #e0e7ff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .option-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .option-btn:hover {
+            background: rgba(139, 92, 246, 0.25);
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.6);
+        }
+
+        .option-btn .game-icon-wrapper {
+            width: 55px;
+            height: 55px;
+            margin-right: 18px;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .option-btn .game-logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, #e0e7ff, #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            overflow: hidden;
+        }
+
+        .option-btn .game-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+        }
+
+        .option-btn i {
+            margin-right: 15px;
+            font-size: 1.6em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .option-btn span {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            text-align: left;
+        }
+
+
+        .music-control {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            z-index: 999;
+            background: rgba(139, 92, 246, 0.3);
+            backdrop-filter: blur(15px);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .music-control:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.7);
+        }
+
+        .music-control i {
+            font-size: 1.8em;
+            color: #e0e7ff;
+            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.8));
+        }
+
+        .music-control.playing i {
+            animation: pulse 1.5s infinite;
+            color: #a78bfa;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-80px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-150px) scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .modal-content {
+                margin: 15% auto;
+                padding: 35px;
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="tetris-canvas"></canvas>
+
+    <div id="customAlert">
+        <i class="fas fa-shield-halved"></i>
+        <h4>Keamanan Aktif</h4>
+        <p id="alertMessage">maaf fitur di matikan, jika kamu ingin source code bisa hubungi pemili bisa dm
+            tiktok/social
+            media terlampir di web ini free kok</p>
+        <button onclick="closeAlert()">Siap, Bang!</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="glitch-wrapper">
+                <h1>👋 Halo, Aku Cardo</h1>
+            </div>
+            <div class="rotating-text fade-in" id="rotatingText"></div>
+        </div>
+
+        <div class="grid">
+            <div class="card donate" onclick="openModal('donateModal')">
+                <div class="card-content">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h2>Donet</h2>
+                    <p>ini bikin acu seneng tau!</p>
+                </div>
+            </div>
+
+            <div class="card game" onclick="openModal('gameModal')">
+                <div class="card-content">
+                    <i class="fas fa-gamepad"></i>
+                    <h2>Mabar</h2>
+                    <p>Cek Akun & Game yang acu main kan!</p>
+                </div>
+            </div>
+
+            <div class="card community" onclick="openModal('communityModal')">
+                <div class="card-content">
+                    <i class="fas fa-users"></i>
+                    <h2>Masuk Sirkel</h2>
+                    <p>Gabung Sirkel & Tourney 24/7!</p>
+                </div>
+            </div>
+
+            <div class="card social" onclick="openModal('socialModal')">
+                <div class="card-content">
+                    <i class="fas fa-share-alt"></i>
+                    <h2>Kepoin acu bang</h2>
+                    <p>Intip Rahasia & Update Terbaru!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-copyright">
+            <i class="far fa-copyright"></i> <span id="currentYear"></span> Cardo. All Rights Reserved.
+        </div>
+    </div>
+
+    <div id="donateModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('donateModal')">&times;</span>
+            <h3><i class="fas fa-donate"></i> Support Me!</h3>
+            <a href="https://tako.id/Crdhoo_" target="_blank" class="option-btn">
+                <i class="fas fa-coffee"></i><span>Tako</span>
+            </a>
+            <a href="https://sociabuzz.com/xxcrdhoo/tribe" target="_blank" class="option-btn">
+                <i class="fas fa-heart"></i><span>Sociabuzz</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="communityModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('communityModal')">&times;</span>
+            <h3><i class="fas fa-user-friends"></i> Join Sirkel</h3>
+            <a href="https://whatsapp.com/channel/0029VbC0mjTFsn0cvaTcrZ1D" target="_blank" class="option-btn">
+                <i class="fab fa-whatsapp"></i><span>WhatsApp (Fast Tourney 24/7)</span>
+            </a>
+            <a href="https://discord.gg/3mfAjscgsv" target="_blank" class="option-btn">
+                <i class="fab fa-discord"></i><span>Discord Server (Mabar Zone)</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('gameModal')">&times;</span>
+            <h3><i class="fas fa-dice"></i> Play With Me!</h3>
+            <div class="option-btn" onclick="openModal('ffModal')">
+                <div class="game-icon-wrapper">
+                    <div class="game-logo"><img src="freefire.png" alt="Free Fire Logo"></div>
+                </div>
+                <span>FREE FIRE</span>
+            </div>
+            <div class="option-btn" onclick="openModal('robloxModal')">
+                <div class="game-icon-wrapper">
+                    <div class="game-logo"><img src="roblox.png" alt="Roblox Logo"></div>
+                </div>
+                <span>ROBLOX</span>
+            </div>
+            <div class="option-btn">
+                <div class="game-icon-wrapper">
+                    <div class="game-logo"><img src="valorant.png" alt="Valorant Logo"></div>
+                </div>
+                <span>VALORANT</span>
+            </div>
+            <div class="option-btn">
+                <div class="game-icon-wrapper">
+                    <div class="game-logo"><img src="Other games.png" alt="Other Games Logo"></div>
+                </div>
+                <span>OTHER GAMES</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="ffModal" class="modal">
+        <div class="modal-content image-modal">
+            <span class="close" onclick="closeModal('ffModal')">&times;</span>
+            <h3>Akun FF</h3>
+            <img src="ff1.jpg" alt="Akun Free Fire 1">
+            <img src="ff2.jpg" alt="Akun Free Fire 2">
+        </div>
+    </div>
+
+    <div id="robloxModal" class="modal">
+        <div class="modal-content image-modal">
+            <span class="close" onclick="closeModal('robloxModal')">&times;</span>
+            <h3>Akun Roblox</h3>
+            <img src="roblox akun.jpg" alt="Akun Roblox">
+        </div>
+    </div>
+
+    <div id="socialModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('socialModal')">&times;</span>
+            <h3><i class="fas fa-star"></i>Follow dulu gak sih!</h3>
+            <a href="https://www.instagram.com/crdhoo_?igsh=NnJ5cHc3eWNsajRh" target="_blank" class="option-btn">
+                <i class="fab fa-instagram"></i><span>Instagram</span>
+            </a>
+            <a href="https://youtube.com/@xxcardo?si=fKSvOJMDPm6gK8oa" target="_blank" class="option-btn">
+                <i class="fab fa-youtube"></i><span>YouTube</span>
+            </a>
+            <a href="https://www.tiktok.com/@crdhoo_?_r=1&_t=ZS-92JxWvA2FvR" target="_blank" class="option-btn">
+                <i class="fab fa-tiktok"></i><span>TikTok</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="music-control" id="musicBtn">
+        <i class="fas fa-volume-xmark" id="musicIcon"></i>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+
+        function showAlert() {
+            const notif = document.getElementById('customAlert');
+            notif.style.display = 'block';
+        }
+
+        function closeAlert() {
+            document.getElementById('customAlert').style.display = 'none';
+        }
+
+
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            showAlert();
+        });
+
+
+        window.addEventListener('keydown', function (e) {
+
+            if (e.keyCode === 123 || e.keyCode === 116) {
+                e.preventDefault();
+                showAlert();
+                return false;
+            }
+
+            if (e.ctrlKey && (e.keyCode === 85 || (e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || e.keyCode === 82)) {
+                e.preventDefault();
+                showAlert();
+                return false;
+            }
+        }, true);
+
+        const canvas = document.getElementById('tetris-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        const shapes = [[[1, 1, 1, 1]], [[1, 1], [1, 1]], [[1, 1, 1], [0, 1, 0]], [[1, 1, 1], [1, 0, 0]], [[1, 1, 1], [0, 0, 1]], [[1, 1, 0], [0, 1, 1]], [[0, 1, 1], [1, 1, 0]]];
+        const colors = ['#8b5cf6', '#a78bfa', '#c4b5fd', '#818cf8', '#a5b4fc', '#6366f1'];
+
+        class TetrisPiece {
+            constructor() {
+                this.shape = shapes[Math.floor(Math.random() * shapes.length)];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.size = 18 + Math.random() * 22;
+                this.x = Math.random() * canvas.width;
+                this.y = -100;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 2;
+                this.speed = 0.8 + Math.random() * 1.5;
+                this.opacity = 0.3 + Math.random() * 0.3;
+                this.sway = Math.random() * 1.5 - 0.75;
+            }
+            update() {
+                this.y += this.speed; this.x += this.sway; this.rotation += this.rotationSpeed;
+                if (this.y > canvas.height + 100) { this.y = -100; this.x = Math.random() * canvas.width; }
+            }
+            draw() {
+                ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation * Math.PI / 180); ctx.globalAlpha = this.opacity; ctx.shadowColor = this.color; ctx.shadowBlur = 10;
+                this.shape.forEach((row, i) => {
+                    row.forEach((cell, j) => {
+                        if (cell) {
+                            const x = j * this.size - (row.length * this.size) / 2; const y = i * this.size - (this.shape.length * this.size) / 2;
+                            ctx.fillStyle = this.color; ctx.fillRect(x, y, this.size - 2, this.size - 2);
+                        }
+                    });
+                }); ctx.restore();
+            }
+        }
+        const pieces = []; for (let i = 0; i < 25; i++) { const p = new TetrisPiece(); p.y = Math.random() * canvas.height; pieces.push(p); }
+        function animate() { ctx.fillStyle = 'rgba(15, 15, 30, 0.12)'; ctx.fillRect(0, 0, canvas.width, canvas.height); pieces.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        animate();
+
+        const texts = ["🎮 Mabar anti baper!", "✨ Gabung sirkel kita bareng!", "💜 Just for fun!", "🌟 123 apa? Follow!", "🏆 Fast Tourney FF 24/7!"];
+        let textIndex = 0; const rotatingTextEl = document.getElementById('rotatingText');
+        function rotateText() {
+            rotatingTextEl.classList.remove('fade-in'); rotatingTextEl.classList.add('fade-out');
+            setTimeout(() => { rotatingTextEl.textContent = texts[textIndex]; textIndex = (textIndex + 1) % texts.length; rotatingTextEl.classList.remove('fade-out'); rotatingTextEl.classList.add('fade-in'); }, 800);
+        }
+        rotatingTextEl.textContent = texts[0]; setInterval(rotateText, 3500);
+
+        function openModal(modalId) { const modals = document.getElementsByClassName('modal'); for (let i = 0; i < modals.length; i++) { modals[i].style.display = 'none'; } document.getElementById(modalId).style.display = 'block'; }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        window.onclick = function (event) { if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; } }
+
+        const audio = document.getElementById('bgMusic'); const btn = document.getElementById('musicBtn'); const icon = document.getElementById('musicIcon'); let playing = false; audio.volume = 0.3;
+        btn.addEventListener('click', function () {
+            if (playing) { audio.pause(); playing = false; icon.className = 'fas fa-volume-xmark'; btn.classList.remove('playing'); }
+            else { audio.play().then(() => { playing = true; icon.className = 'fas fa-volume-high'; btn.classList.add('playing'); }).catch(err => { console.error(err); }); }
+        });
+    </script>
+</body>
+
+</html>
