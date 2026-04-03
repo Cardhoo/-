@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardo's Hub</title>
+    <title>Spidey Mabar Zone</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,7 +15,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
             background: #0a0a0a;
             color: white;
@@ -631,6 +632,264 @@
                 padding: 35px;
                 max-width: 90%;
             }
+
+            .live-queue-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .queue-container {
+                flex-direction: column;
+            }
+        }
+
+        /* --- LIVE QUEUE --- */
+        .live-queue-banner {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.8) 0%, rgba(99, 102, 241, 0.8) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .live-queue-banner:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
+        }
+
+        .live-queue-info h2 {
+            margin-bottom: 5px;
+            font-size: 1.5em;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .live-queue-info p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+
+        .live-queue-action i {
+            font-size: 2em;
+            animation: pulse 2s infinite;
+        }
+
+        .queue-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .queue-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .queue-column {
+            flex: 1;
+            background: rgba(20, 20, 30, 0.4);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .queue-column h4 {
+            text-align: center;
+            color: #e0e7ff;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed rgba(139, 92, 246, 0.3);
+        }
+
+        .queue-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .queue-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .queue-list::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 10px;
+        }
+
+        .queue-item {
+            background: rgba(30, 30, 50, 0.8);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .queue-item.playing {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            margin-top: 15px;
+        }
+
+        .queue-item.playing::before {
+            content: "🎮 Main Sekarang";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #10b981;
+            font-size: 0.7em;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .queue-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .queue-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #e0e7ff;
+        }
+
+        .queue-time {
+            font-size: 0.8em;
+            color: #a5b4fc;
+        }
+
+        .admin-controls {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed rgba(139, 92, 246, 0.3);
+        }
+
+        .admin-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .admin-input-group input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            background: rgba(20, 20, 30, 0.8);
+            color: white;
+            outline: none;
+            font-size: 1em;
+        }
+
+        .admin-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 1em;
+        }
+
+        .admin-btn:hover {
+            background: #a78bfa;
+            transform: translateY(-2px);
+        }
+
+        .done-btn {
+            background: #10b981;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .done-btn:hover {
+            background: #34d399;
+        }
+
+        .edit-btn {
+            background: #eab308;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-right: 5px;
+        }
+
+        .edit-btn:hover {
+            background: #facc15;
+        }
+
+        .edit-input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #eab308;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1.1em;
+        }
+
+        .queue-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: rgba(139, 92, 246, 0.5);
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .queue-left {
+            display: flex;
+            align-items: center;
+        }
+
+        #adminLoginModal .modal-content {
+            max-width: 400px;
+            text-align: center;
+        }
+
+        #queueModal .modal-content {
+            max-width: 900px;
+        }
+
+        #adminLoginModal .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 2px solid #8b5cf6;
+            background: #1e1e2e;
+            color: white;
+            font-size: 1.1em;
         }
     </style>
 </head>
@@ -640,7 +899,7 @@
 
     <div id="customAlert">
         <i class="fas fa-shield-halved"></i>
-        <h4>Keamanan Aktif</h4>
+        <h4 id="alertTitle">Keamanan Aktif</h4>
         <p id="alertMessage">maaf fitur di matikan, jika kamu ingin source code bisa hubungi pemili bisa dm
             tiktok/social
             media terlampir di web ini free kok</p>
@@ -650,9 +909,19 @@
     <div class="container">
         <div class="header">
             <div class="glitch-wrapper">
-                <h1>👋 Halo, Aku Cardo</h1>
+                <h1 id="adminTrigger">👋 Halo, Aku Cardo</h1>
             </div>
             <div class="rotating-text fade-in" id="rotatingText"></div>
+        </div>
+
+        <div class="live-queue-banner" onclick="openModal('queueModal')">
+            <div class="live-queue-info">
+                <h2><i class="fas fa-list-ol"></i> Antrian Mabar Live</h2>
+                <p>Status: <span id="queueStatusText">Menunggu...</span></p>
+            </div>
+            <div class="live-queue-action">
+                <i class="fas fa-chevron-right"></i>
+            </div>
         </div>
 
         <div class="grid">
@@ -756,7 +1025,6 @@
             <span class="close" onclick="closeModal('ffModal')">&times;</span>
             <h3>Akun FF</h3>
             <img src="ff1.jpg" alt="Akun Free Fire 1">
-            <img src="ff2.jpg" alt="Akun Free Fire 2">
         </div>
     </div>
 
@@ -784,6 +1052,57 @@
         </div>
     </div>
 
+    <div id="queueModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('queueModal')">&times;</span>
+            <h3 style="margin-bottom: 10px;"><i class="fas fa-gamepad"></i> Antrian Mabar</h3>
+            <p style="text-align: center; color: #a5b4fc; margin-bottom: 20px;">Daftar pemain yang akan mabar</p>
+
+            <div class="queue-container">
+                <div class="queue-column">
+                    <h4>Reguler (11/22/33/44)</h4>
+                    <div class="queue-list" id="queueListRegular"></div>
+                </div>
+                <div class="queue-column">
+                    <h4>VIP Invit</h4>
+                    <div class="queue-list" id="queueListVIP"></div>
+                </div>
+            </div>
+
+            <div class="admin-controls" id="adminControls">
+                <h4>Admin Panel (Cardo Only)</h4>
+                <div class="admin-input-group" style="flex-wrap: wrap;">
+                    <input type="text" id="newQueueName" placeholder="Nama Donatur" style="min-width: 120px;">
+                    <select id="newQueueMode" onchange="checkVipMode()"
+                        style="padding: 10px 15px; border-radius: 10px; border: 2px solid rgba(139, 92, 246, 0.4); background: rgba(20, 20, 30, 0.8); color: white; outline: none; font-size: 1em; cursor: pointer;">
+                        <option value="VIP 11">VIP 11</option>
+                        <option value="VIP 22">VIP 22</option>
+                        <option value="VIP 33">VIP 33</option>
+                        <option value="VIP 44">VIP 44</option>
+                        <option value="VIP Invit">VIP Invit</option>
+                    </select>
+                    <input type="number" id="newQueueMatch" placeholder="Jml Match"
+                        style="display: none; max-width: 100px;">
+                    <button class="admin-btn" onclick="addToQueue()"><i class="fas fa-plus"></i></button>
+                </div>
+                <button class="admin-btn" style="width: 100%; background: #ef4444; margin-top: 10px;"
+                    onclick="logoutAdmin()">Keluar Mode Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminLoginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('adminLoginModal')">&times;</span>
+            <i class="fas fa-user-secret"
+                style="font-size: 3em; color: #8b5cf6; margin-bottom: 15px; display: block; text-align: center;"></i>
+            <h3>Login Admin</h3>
+            <input type="password" id="adminPassword" placeholder="Masukkan Password Rahasia">
+            <button class="admin-btn" style="width: 100%; margin-top: 10px;" onclick="verifyAdmin()">Masuk Mode
+                Admin</button>
+        </div>
+    </div>
+
     <div class="music-control" id="musicBtn">
         <i class="fas fa-volume-xmark" id="musicIcon"></i>
     </div>
@@ -792,11 +1111,32 @@
         <source src="music.mp3" type="audio/mp3">
     </audio>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCGodJKks_Ft-hGauJZQXaTgFeFi_GMvOo",
+            authDomain: "xxcrdhooweb.firebaseapp.com",
+            projectId: "xxcrdhooweb",
+            storageBucket: "xxcrdhooweb.firebasestorage.app",
+            messagingSenderId: "677380468240",
+            appId: "1:677380468240:web:374fb50a2367149a892495",
+            databaseURL: "https://xxcrdhooweb-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
 
         function showAlert() {
+            showDynamicAlert('Keamanan Aktif', 'maaf fitur di matikan, jika kamu ingin source code bisa hubungi pemili bisa dm tiktok/social media terlampir di web ini free kok', 'fas fa-shield-halved');
+        }
+
+        function showDynamicAlert(title, message, iconClass) {
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertMessage').innerText = message;
+            document.querySelector('#customAlert i').className = iconClass || 'fas fa-shield-halved';
             const notif = document.getElementById('customAlert');
             notif.style.display = 'block';
         }
@@ -886,6 +1226,254 @@
             if (playing) { audio.pause(); playing = false; icon.className = 'fas fa-volume-xmark'; btn.classList.remove('playing'); }
             else { audio.play().then(() => { playing = true; icon.className = 'fas fa-volume-high'; btn.classList.add('playing'); }).catch(err => { console.error(err); }); }
         });
+
+        // --- LIVE QUEUE LOGIC ---
+        let queueData = [];
+        let isAdmin = false;
+
+        // Listen dari Firebase langsung (Cloud/Realtime)
+        database.ref('mabarQueue').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+
+                let tempArr = Array.isArray(data) ? data : Object.values(data);
+                queueData = tempArr.filter(item => item !== null && typeof item === 'object' && item.id);
+
+                queueData.sort((a, b) => a.id - b.id);
+            } else {
+                queueData = [];
+            }
+            renderQueue();
+        });
+
+        let adminClickCount = 0;
+        let adminClickTimer;
+        document.getElementById('adminTrigger').addEventListener('click', function () {
+            adminClickCount++;
+            if (adminClickCount === 1) {
+                adminClickTimer = setTimeout(() => { adminClickCount = 0; }, 2000);
+            }
+            if (adminClickCount >= 3) {
+                clearTimeout(adminClickTimer);
+                adminClickCount = 0;
+                if (!isAdmin) {
+                    openModal('adminLoginModal');
+                    setTimeout(() => document.getElementById('adminPassword').focus(), 100);
+                } else {
+                    showDynamicAlert('Admin Aktif', 'Mode Admin sudah aktif dan siap digunakan!', 'fas fa-check-circle');
+                    openModal('queueModal');
+                }
+            }
+        });
+
+        function verifyAdmin() {
+            const pass = document.getElementById('adminPassword').value;
+            if (pass === '19062006@') {
+                isAdmin = true;
+                closeModal('adminLoginModal');
+                document.getElementById('adminPassword').value = '';
+                renderQueue();
+                showDynamicAlert('Berhasil', 'Berhasil masuk Mode Admin!\\nSekarang Bang Cardo punya kontrol antrian.', 'fas fa-check-double');
+                openModal('queueModal');
+            } else {
+                showDynamicAlert('Akses Ditolak', 'Password Salah! Coba lagi ya.', 'fas fa-times-circle');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            renderQueue();
+            closeModal('queueModal');
+        }
+
+        function checkVipMode() {
+            const mode = document.getElementById('newQueueMode').value;
+            const matchInput = document.getElementById('newQueueMatch');
+            if (mode === 'VIP Invit') {
+                matchInput.style.display = 'block';
+                matchInput.value = '2'; // Default VIP match
+            } else {
+                matchInput.style.display = 'none';
+            }
+        }
+
+        function addToQueue() {
+            const nameInput = document.getElementById('newQueueName');
+            const modeInput = document.getElementById('newQueueMode');
+            const matchInput = document.getElementById('newQueueMatch');
+
+            const name = nameInput.value.trim();
+            const mode = modeInput.value;
+            let matchCount = mode === 'VIP Invit' ? parseInt(matchInput.value) || 1 : 1;
+
+            if (name) {
+                const time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                queueData.push({ id: Date.now(), name: name, time: time, mode: mode, matchCount: matchCount, isVipPlaying: false });
+                saveAndRenderQueue();
+                nameInput.value = '';
+            }
+        }
+
+        function toggleVipPlay(id) {
+            const itemIndex = queueData.findIndex(d => d.id === id);
+            if (itemIndex > -1) {
+                queueData[itemIndex].isVipPlaying = !queueData[itemIndex].isVipPlaying;
+                saveAndRenderQueue();
+            }
+        }
+
+        function removeQueue(id) {
+            const itemIndex = queueData.findIndex(d => d.id === id);
+            if (itemIndex > -1) {
+                if (queueData[itemIndex].mode === 'VIP Invit' && queueData[itemIndex].matchCount > 1) {
+                    queueData[itemIndex].matchCount -= 1;
+                } else {
+                    queueData.splice(itemIndex, 1);
+                }
+                saveAndRenderQueue();
+            }
+        }
+
+        function forceRemoveQueue(id) {
+            queueData = queueData.filter(d => d.id !== id);
+            saveAndRenderQueue();
+        }
+
+        function editQueue(id) {
+            const item = queueData.find(d => d.id === id);
+            if (!item) return;
+
+            const detailsDiv = document.getElementById(`details-${id}`);
+            detailsDiv.innerHTML = `
+                <input type="text" class="edit-input" id="edit-input-${id}" value="${item.name}">
+                <button class="edit-btn" style="margin-top: 5px; padding: 5px 10px; font-size: 0.8em; font-weight: bold; width: 100%;" onclick="saveEdit(${id})"><i class="fas fa-save"></i> Simpan Nama</button>
+            `;
+            setTimeout(() => document.getElementById(`edit-input-${id}`).focus(), 50);
+        }
+
+        function saveEdit(id) {
+            const newName = document.getElementById(`edit-input-${id}`).value.trim();
+            const itemIndex = queueData.findIndex(d => d.id === id);
+            if (newName && itemIndex > -1) {
+                queueData[itemIndex].name = newName;
+                saveAndRenderQueue();
+            } else if (itemIndex > -1) {
+                renderQueue(); // if empty, cancel edit
+            }
+        }
+
+        function saveAndRenderQueue() {
+            // Push ke Firebase Cloud, otomatis ngabarin listener di atas buat rander ui
+            database.ref('mabarQueue').set(queueData);
+            renderQueue(); // Manual panggil untuk atasi delay DOM ketika nambah dari admin panel
+        }
+
+        function renderQueue() {
+            const listReg = document.getElementById('queueListRegular');
+            const listVip = document.getElementById('queueListVIP');
+            listReg.innerHTML = '';
+            listVip.innerHTML = '';
+
+            const isRegEmpty = queueData.filter(d => d.mode !== 'VIP Invit').length === 0;
+            const isVipEmpty = queueData.filter(d => d.mode === 'VIP Invit').length === 0;
+
+            if (isRegEmpty) listReg.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Kosong</p>';
+            if (isVipEmpty) listVip.innerHTML = '<p style="text-align:center; color:gray; padding: 20px;">Kosong</p>';
+
+            document.getElementById('queueStatusText').innerText = queueData.length + ' Orang Menunggu';
+
+            let regIndex = 0;
+            queueData.forEach((item) => {
+                const isVip = item.mode === 'VIP Invit';
+
+                let currentItemIndex;
+                if (!isVip) {
+                    currentItemIndex = regIndex;
+                    regIndex++;
+                }
+
+                const isPlaying = (!isVip && currentItemIndex === 0) || (isVip && item.isVipPlaying);
+
+                const div = document.createElement('div');
+                div.className = 'queue-item' + (isPlaying ? ' playing' : '');
+
+                let finishBtn = `<button class="done-btn" onclick="removeQueue(${item.id})"><i class="fas fa-check"></i> Selesai</button>`;
+                let deleteBtn = `<button class="done-btn" style="background:#ef4444; padding: 8px 12px; margin-left: 5px;" onclick="forceRemoveQueue(${item.id})"><i class="fas fa-times"></i></button>`;
+
+                let btnHtml = '';
+                if (isAdmin) {
+                    let controls = `<button class="edit-btn" onclick="editQueue(${item.id})"><i class="fas fa-edit"></i></button>`;
+                    if (isVip) {
+                        controls += `<button class="done-btn" style="background:${isPlaying ? '#6b7280' : '#3b82f6'}; padding: 8px 12px; margin-right: 5px;" onclick="toggleVipPlay(${item.id})"><i class="fas fa-${isPlaying ? 'stop' : 'play'}"></i> ${isPlaying ? 'Stop' : 'Main'}</button>`;
+                    }
+
+                    if (isPlaying) {
+                        btnHtml = `
+                            <div style="display: flex;">
+                                ${controls}
+                                ${finishBtn}
+                            </div>
+                        `;
+                    } else {
+                        btnHtml = `
+                            <div style="display: flex;">
+                                ${controls}
+                                ${deleteBtn}
+                            </div>
+                        `;
+                    }
+                }
+
+                let badge = isVip
+                    ? `<span style="background: #fbbf24; color: black; font-size: 0.7em; padding: 2px 6px; border-radius: 5px; margin-left: auto; white-space: nowrap;">⚡ Sisa ${item.matchCount} Match</span>`
+                    : `<span style="background: rgba(139, 92, 246, 0.4); font-size: 0.7em; padding: 2px 6px; border-radius: 5px; margin-left: auto; white-space: nowrap;">${item.mode || '??'}</span>`;
+
+                div.innerHTML = `
+                    <div class="queue-left" style="width: 100%; justify-content: space-between;">
+                        <div style="display:flex; align-items: center;">
+                            ${!isVip ? `<div class="queue-number">#${currentItemIndex + 1}</div>` : ''}
+                            <div class="queue-details" id="details-${item.id}">
+                                <div class="queue-name" style="display:flex; align-items:center;">${item.name}</div>
+                                <div class="queue-time"><i class="far fa-clock"></i> ${item.time} WIB</div>
+                            </div>
+                        </div>
+                        ${badge}
+                    </div>
+                `;
+
+                // insert admin controls row below
+                if (btnHtml !== '') {
+                    const btnDiv = document.createElement('div');
+                    btnDiv.style.marginTop = '10px';
+                    btnDiv.style.display = 'flex';
+                    btnDiv.style.justifyContent = 'flex-end';
+                    btnDiv.style.width = '100%';
+                    btnDiv.innerHTML = btnHtml;
+                    div.style.flexDirection = 'column';
+                    div.style.alignItems = 'flex-start';
+                    div.appendChild(btnDiv);
+                } else {
+                    div.style.flexDirection = 'column';
+                    div.style.alignItems = 'flex-start';
+                }
+
+                if (isVip) {
+                    listVip.appendChild(div);
+                } else {
+                    listReg.appendChild(div);
+                }
+            });
+
+            const adminControls = document.getElementById('adminControls');
+            if (isAdmin) {
+                adminControls.style.display = 'block';
+            } else {
+                adminControls.style.display = 'none';
+            }
+        }
+
+        // Initialize queue on load
+        renderQueue();
     </script>
 </body>
 
