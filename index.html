@@ -1227,11 +1227,11 @@
             else { audio.play().then(() => { playing = true; icon.className = 'fas fa-volume-high'; btn.classList.add('playing'); }).catch(err => { console.error(err); }); }
         });
 
-        // --- LIVE QUEUE LOGIC ---
+        
         let queueData = [];
         let isAdmin = false;
 
-        // Listen dari Firebase langsung (Cloud/Realtime)
+        
         database.ref('mabarQueue').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -1273,10 +1273,10 @@
                 closeModal('adminLoginModal');
                 document.getElementById('adminPassword').value = '';
                 renderQueue();
-                showDynamicAlert('Berhasil', 'Berhasil masuk Mode Admin!\\nSekarang Bang Cardo punya kontrol antrian.', 'fas fa-check-double');
+                showDynamicAlert('Berhasil', 'Berhasil masuk Mode Admin!', 'fas fa-check-double');
                 openModal('queueModal');
             } else {
-                showDynamicAlert('Akses Ditolak', 'Password Salah! Coba lagi ya.', 'fas fa-times-circle');
+                showDynamicAlert('Akses Ditolak', 'Password Salah! Silahkan Coba lagi.', 'fas fa-times-circle');
             }
         }
 
@@ -1315,7 +1315,7 @@
         }
 
         function toggleVipPlay(id) {
-            const itemIndex = queueData.findIndex(d => d.id === id);
+            const itemIndex = queueData.findIndex(d => String(d.id) === String(id));
             if (itemIndex > -1) {
                 queueData[itemIndex].isVipPlaying = !queueData[itemIndex].isVipPlaying;
                 saveAndRenderQueue();
@@ -1323,7 +1323,7 @@
         }
 
         function removeQueue(id) {
-            const itemIndex = queueData.findIndex(d => d.id === id);
+            const itemIndex = queueData.findIndex(d => String(d.id) === String(id));
             if (itemIndex > -1) {
                 if (queueData[itemIndex].mode === 'VIP Invit' && queueData[itemIndex].matchCount > 1) {
                     queueData[itemIndex].matchCount -= 1;
@@ -1335,12 +1335,12 @@
         }
 
         function forceRemoveQueue(id) {
-            queueData = queueData.filter(d => d.id !== id);
+            queueData = queueData.filter(d => String(d.id) !== String(id));
             saveAndRenderQueue();
         }
 
         function editQueue(id) {
-            const item = queueData.find(d => d.id === id);
+            const item = queueData.find(d => String(d.id) === String(id));
             if (!item) return;
 
             const detailsDiv = document.getElementById(`details-${id}`);
@@ -1353,19 +1353,19 @@
 
         function saveEdit(id) {
             const newName = document.getElementById(`edit-input-${id}`).value.trim();
-            const itemIndex = queueData.findIndex(d => d.id === id);
+            const itemIndex = queueData.findIndex(d => String(d.id) === String(id));
             if (newName && itemIndex > -1) {
                 queueData[itemIndex].name = newName;
                 saveAndRenderQueue();
             } else if (itemIndex > -1) {
-                renderQueue(); // if empty, cancel edit
+                renderQueue(); 
             }
         }
 
         function saveAndRenderQueue() {
-            // Push ke Firebase Cloud, otomatis ngabarin listener di atas buat rander ui
+            
             database.ref('mabarQueue').set(queueData);
-            renderQueue(); // Manual panggil untuk atasi delay DOM ketika nambah dari admin panel
+            renderQueue(); 
         }
 
         function renderQueue() {
