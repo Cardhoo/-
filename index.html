@@ -1218,8 +1218,22 @@
         rotatingTextEl.textContent = texts[0]; setInterval(rotateText, 3500);
 
         function openModal(modalId) { const modals = document.getElementsByClassName('modal'); for (let i = 0; i < modals.length; i++) { modals[i].style.display = 'none'; } document.getElementById(modalId).style.display = 'block'; }
-        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
-        window.onclick = function (event) { if (event.target.classList.contains('modal')) { event.target.style.display = 'none'; } }
+        function closeModal(modalId) {
+            if (modalId === 'queueModal' && typeof isAdmin !== 'undefined' && isAdmin) {
+                logoutAdmin();
+                return;
+            }
+            document.getElementById(modalId).style.display = 'none';
+        }
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                if (event.target.id === 'queueModal' && typeof isAdmin !== 'undefined' && isAdmin) {
+                    logoutAdmin();
+                } else {
+                    event.target.style.display = 'none';
+                }
+            }
+        }
 
         const audio = document.getElementById('bgMusic'); const btn = document.getElementById('musicBtn'); const icon = document.getElementById('musicIcon'); let playing = false; audio.volume = 0.3;
         btn.addEventListener('click', function () {
@@ -1227,11 +1241,9 @@
             else { audio.play().then(() => { playing = true; icon.className = 'fas fa-volume-high'; btn.classList.add('playing'); }).catch(err => { console.error(err); }); }
         });
 
-        
         let queueData = [];
         let isAdmin = false;
 
-        
         database.ref('mabarQueue').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -1273,10 +1285,10 @@
                 closeModal('adminLoginModal');
                 document.getElementById('adminPassword').value = '';
                 renderQueue();
-                showDynamicAlert('Berhasil', 'Berhasil masuk Mode Admin!', 'fas fa-check-double');
+                showDynamicAlert('Berhasil', 'Berhasil masuk Mode Admin!\\nSekarang Bang Cardo punya kontrol antrian.', 'fas fa-check-double');
                 openModal('queueModal');
             } else {
-                showDynamicAlert('Akses Ditolak', 'Password Salah! Silahkan Coba lagi.', 'fas fa-times-circle');
+                showDynamicAlert('Akses Ditolak', 'Password Salah! Coba lagi ya.', 'fas fa-times-circle');
             }
         }
 
@@ -1291,7 +1303,7 @@
             const matchInput = document.getElementById('newQueueMatch');
             if (mode === 'VIP Invit') {
                 matchInput.style.display = 'block';
-                matchInput.value = '2'; // Default VIP match
+                matchInput.value = '2';
             } else {
                 matchInput.style.display = 'none';
             }
@@ -1358,14 +1370,14 @@
                 queueData[itemIndex].name = newName;
                 saveAndRenderQueue();
             } else if (itemIndex > -1) {
-                renderQueue(); 
+                renderQueue();
             }
         }
 
         function saveAndRenderQueue() {
-            
+
             database.ref('mabarQueue').set(queueData);
-            renderQueue(); 
+            renderQueue();
         }
 
         function renderQueue() {
@@ -1441,7 +1453,6 @@
                     </div>
                 `;
 
-                // insert admin controls row below
                 if (btnHtml !== '') {
                     const btnDiv = document.createElement('div');
                     btnDiv.style.marginTop = '10px';
@@ -1472,7 +1483,6 @@
             }
         }
 
-        // Initialize queue on load
         renderQueue();
     </script>
 </body>
